@@ -1,10 +1,13 @@
 package com.assessments.luckyshop.api.dto.response;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
-public class CreateBillResponse {
+@Builder
+public class BillResponse {
     private BigDecimal amount;
+    private BigDecimal discountAmount;
 }
