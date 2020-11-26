@@ -25,8 +25,8 @@ public class LoyaltyDiscountCommand implements DiscountCommand {
     }
 
     @Override
-    public BigDecimal execute() {
-        BigDecimal totalAmount = ShopUtils.calculateTotalAmount(productsByQuantities);
+    public BigDecimal execute(BigDecimal discountAmount) {
+        BigDecimal totalAmount = ShopUtils.calculateTotalAmount(productsByQuantities).subtract(discountAmount);
         return ShopUtils.calculateDiscountAmount(totalAmount, DISCOUNT_SETTING.getDiscountAmount());
     }
 

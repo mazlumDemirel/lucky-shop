@@ -2,12 +2,14 @@ package com.assessments.luckyshop.product.repository;
 
 import com.assessments.luckyshop.infrastructure.util.TransactionIdGenerator;
 import com.assessments.luckyshop.product.model.entity.Product;
+import com.assessments.luckyshop.product.model.enums.ProductType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,6 +25,8 @@ class ProductRepositoryIntegrationTest {
     @BeforeEach
     void setUp() {
         Product product = new Product();
+        product.setProductType(ProductType.OTHERS);
+        product.setPrice(BigDecimal.ONE);
         product.setTransactionId(savedProductTransactionId);
         productRepository.save(product);
     }

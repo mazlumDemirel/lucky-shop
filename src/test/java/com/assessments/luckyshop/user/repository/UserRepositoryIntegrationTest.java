@@ -2,6 +2,7 @@ package com.assessments.luckyshop.user.repository;
 
 import com.assessments.luckyshop.infrastructure.util.TransactionIdGenerator;
 import com.assessments.luckyshop.user.model.entity.User;
+import com.assessments.luckyshop.user.model.enums.UserType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ class UserRepositoryIntegrationTest {
     @BeforeEach
     void setUp() {
         User user = new User();
+        user.setUserType(UserType.MEMBER);
         user.setTransactionId(savedUserTransactionId);
         userRepository.save(user);
     }

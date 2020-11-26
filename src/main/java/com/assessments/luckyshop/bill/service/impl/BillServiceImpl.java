@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.assessments.luckyshop.infrastructure.util.ShopUtils.groupProductsByQuantities;
+
 @Service
 @RequiredArgsConstructor
 public class BillServiceImpl implements BillService {
@@ -35,17 +37,5 @@ public class BillServiceImpl implements BillService {
                 .amount(ShopUtils.calculateTotalAmount(productsByQuantities))
                 .discountAmount(discountAmount)
                 .build();
-    }
-
-    private Map<Long, Product> groupProductsByQuantities(CreateBillRequest billRequest, List<Product> products) {
-        Map<String, Long> productQuantities = billRequest.getProducts().stream().collect(Collectors.toMap(ProductCount::getProductId, ProductCount::getQuantity));
-        Map<String, Product> productsByIds = products.stream().collect(Collectors.toMap(Product::getTransactionId, product -> product));
-        return productQuantities
-                .entrySet()
-                .stream()
-                .map(productIdQuantityEntry ->
-                        Map.entry(productIdQuantityEntry.getValue(), productsByIds.get(productIdQuantityEntry.getKey()))
-                )
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }

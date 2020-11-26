@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 public interface DiscountCommand {
     boolean isApplicable();
 
-    BigDecimal execute();
+    BigDecimal execute(BigDecimal discountAmount);
 
     DiscountSetting getDiscountSetting();
 }

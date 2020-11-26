@@ -1,16 +1,16 @@
 package com.assessments.luckyshop.api.dto.request;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
-@Data
 @Builder
+@Getter
 public class ProductCount {
     @NotBlank
-    private String productId;
+    private final String productId;
     @Min(1L)
-    private long quantity;
+    private final long quantity;
 }

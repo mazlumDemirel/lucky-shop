@@ -8,10 +8,8 @@ CREATE TABLE IF NOT EXISTS "user"
 		constraint category_pkey
 			primary key,
 	created_at timestamp not null,
-	deleted boolean not null,
-	transaction_id varchar(255),
-	updated_at timestamp,
-    userType varchar(10) not null
+	transaction_id varchar(255) not null,
+	user_type varchar(10) not null
 );
 
 CREATE TABLE IF NOT EXISTS product
@@ -20,9 +18,7 @@ CREATE TABLE IF NOT EXISTS product
 		constraint condition_pkey
 			primary key,
 	created_at timestamp not null,
-	deleted boolean not null,
-	transaction_id varchar(255),
-	updated_at timestamp,
-	productType varchar(10) not null,
+	transaction_id varchar(255) not null,
+	product_type varchar(10) not null,
 	price decimal not null
 );

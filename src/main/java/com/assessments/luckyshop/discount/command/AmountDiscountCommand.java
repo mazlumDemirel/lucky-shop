@@ -26,15 +26,18 @@ public class AmountDiscountCommand implements DiscountCommand {
     }
 
     @Override
-    public BigDecimal execute() {
-        BigDecimal quotient = productsByQuantities
+    public BigDecimal execute(BigDecimal discountAmount) {
+        BigDecimal totalAmountOfEligibleProducts = productsByQuantities
                 .entrySet()
                 .stream()
                 .filter(longProductEntry -> longProductEntry.getValue().getProductType().equals(ProductType.OTHERS))
-                .map(longProductEntry -> {
-                    BigDecimal amount = ShopUtils.calculateAmount(longProductEntry.getValue().getPrice(), longProductEntry.getKey());
-                    return amount.divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP);
-                }).reduce(BigDecimal.ZERO, BigDecimal::add);
+                .map(longProductEntry ->
+                        ShopUtils.calculateAmount(longProductEntry.getValue().getPrice(), longProductEntry.getKey())
+                ).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal quotient = totalAmountOfEligibleProducts
+                .divide(BigDecimal.valueOf(100), RoundingMode.UP)
+                .setScale(0, RoundingMode.DOWN);
 
         return quotient.multiply(BigDecimal.valueOf(DISCOUNT_SETTING.getDiscountAmount()));
     }

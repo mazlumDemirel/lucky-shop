@@ -12,9 +12,4 @@ public class ShopException extends RuntimeException {
         super(applicationErrorCode.getMessage());
         this.httpStatus = applicationErrorCode.getHttpStatus();
     }
-
-    public ShopException(ApplicationErrorCode applicationErrorCode, Object... params) {
-        super(String.format(applicationErrorCode.getMessage(), params));
-        this.httpStatus = applicationErrorCode.getHttpStatus();
-    }
 }

@@ -1,7 +1,11 @@
 package com.assessments.luckyshop.discount.service.impl;
 
 import com.assessments.luckyshop.api.dto.request.CreateBillRequest;
+import com.assessments.luckyshop.discount.command.AffiliateDiscountCommand;
+import com.assessments.luckyshop.discount.command.AmountDiscountCommand;
 import com.assessments.luckyshop.discount.command.CommandExecutor;
+import com.assessments.luckyshop.discount.command.EmployeeDiscountCommand;
+import com.assessments.luckyshop.discount.command.LoyaltyDiscountCommand;
 import com.assessments.luckyshop.discount.service.DiscountService;
 import com.assessments.luckyshop.product.model.entity.Product;
 import com.assessments.luckyshop.user.model.entity.User;
@@ -20,7 +24,12 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public BigDecimal calculateDiscount(CreateBillRequest createBillRequest, Map<Long, Product> productsByQuantities) {
         User user = userService.getUser(createBillRequest.getUserId());
-        CommandExecutor commandExecutor = new CommandExecutor(user, productsByQuantities);
+        CommandExecutor commandExecutor = new CommandExecutor();
+
+        commandExecutor.addCommand(new AmountDiscountCommand(productsByQuantities));
+        commandExecutor.addCommand(new AffiliateDiscountCommand(user, productsByQuantities));
+        commandExecutor.addCommand(new EmployeeDiscountCommand(user, productsByQuantities));
+        commandExecutor.addCommand(new LoyaltyDiscountCommand(user, productsByQuantities));
 
         return commandExecutor.executeCommands();
     }
