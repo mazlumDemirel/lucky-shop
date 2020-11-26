@@ -64,6 +64,43 @@ class LoyaltyDiscountCommandTest {
     }
 
     @Test
+    void execute_withValidParametersAppendsDiscountAmountToTotalDiscountAmount1_shouldPass() {
+        //given
+        String productId1 = TransactionIdGenerator.generate();
+        String productId2 = TransactionIdGenerator.generate();
+
+        Map<Long, Product> products = Map.of(
+                10L, new Product() {{
+                    setTransactionId(productId1);
+                    setPrice(BigDecimal.TEN);
+                    setProductType(ProductType.OTHERS);
+                }},
+                100L, new Product() {{
+                    setTransactionId(productId2);
+                    setPrice(BigDecimal.ONE);
+                    setProductType(ProductType.GROCERIES);
+                }}
+        );
+
+        User user = new User() {{
+            setUserType(UserType.MEMBER);
+            setCreatedAt(LocalDateTime.parse("2018-11-26T00:00:01Z", DateTimeFormatter.ISO_DATE_TIME));
+        }};
+
+        DiscountCommand discountCommand = new LoyaltyDiscountCommand(user, products, fixedClockNow);
+        BigDecimal totalDiscountAmount = BigDecimal.TEN;
+
+        //then
+        assertThat(discountCommand.isApplicable()).isTrue();
+
+        assertThat(discountCommand.execute(totalDiscountAmount))
+                .isEqualTo(
+                        ShopUtils.calculateDiscountAmount(ShopUtils.calculateTotalAmount(products).subtract(totalDiscountAmount), DiscountSetting.LOYALTY.getDiscountAmount())
+                );
+
+    }
+
+    @Test
     void execute_withNotEligibleUserIsNotApplicable_shouldPass() {
         //given
         String productId1 = TransactionIdGenerator.generate();
