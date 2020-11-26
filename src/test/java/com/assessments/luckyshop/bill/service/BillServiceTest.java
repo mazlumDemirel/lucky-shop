@@ -1,6 +1,7 @@
 package com.assessments.luckyshop.bill.service;
 
 import com.assessments.luckyshop.api.dto.request.CreateBillRequest;
+import com.assessments.luckyshop.api.dto.request.ProductCount;
 import com.assessments.luckyshop.api.dto.response.BillResponse;
 import com.assessments.luckyshop.bill.service.impl.BillServiceImpl;
 import com.assessments.luckyshop.discount.service.DiscountService;
@@ -17,9 +18,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -48,28 +52,34 @@ class BillServiceTest {
 
         BigDecimal productPrice = BigDecimal.valueOf(100L);
 
-        Product expectedProduct = new Product();
-        expectedProduct.setPrice(productPrice);
+        List<Product> expectedProducts = List.of(new Product() {{
+            setPrice(productPrice);
+            setTransactionId(productId);
+        }});
+
+        List<String> productIds = List.of(productId);
 
         BigDecimal calculatedDiscountAmount = BigDecimal.valueOf(10);
 
+        List<ProductCount> productCounts = List.of(ProductCount.builder().productId(productId).quantity(1L).build());
+
         CreateBillRequest createBillRequest = CreateBillRequest.builder()
-                .quantity(quantity)
+                .products(productCounts)
                 .userId(userId)
                 .build();
 
-        given(productService.getProduct(productId)).willReturn(expectedProduct);
-        given(discountService.calculateDiscount(createBillRequest, expectedProduct)).willReturn(calculatedDiscountAmount);
+        given(productService.getProducts(argThat(argument -> argument.containsAll(productIds)))).willReturn(expectedProducts);
+        given(discountService.calculateDiscount(eq(createBillRequest), argThat(argument -> argument.containsAll(expectedProducts)))).willReturn(calculatedDiscountAmount);
 
         //when
-        BillResponse billResponse = billService.createBill(productId, createBillRequest);
+        BillResponse billResponse = billService.createBill(createBillRequest);
 
         //then
-        verify(productService).getProduct(productId);
-        verify(discountService).calculateDiscount(createBillRequest, expectedProduct);
+        verify(productService).getProducts(productIds);
+        verify(discountService).calculateDiscount(eq(createBillRequest), argThat(argument -> argument.containsAll(expectedProducts)));
         assertThat(billResponse)
                 .isNotNull()
-                .hasFieldOrPropertyWithValue("amount", ShopUtils.calculateTotalAmount(productPrice, quantity))
+                .hasFieldOrPropertyWithValue("amount", ShopUtils.calculateAmount(productPrice, quantity))
                 .hasFieldOrPropertyWithValue("discountAmount", calculatedDiscountAmount);
     }
 
@@ -80,19 +90,25 @@ class BillServiceTest {
         String userId = "dummy-user-id";
         long quantity = 1L;
 
+        BigDecimal productPrice = BigDecimal.valueOf(100L);
+
+        List<String> productIds = List.of(productId);
+
+        List<ProductCount> productCounts = List.of(ProductCount.builder().productId(productId).quantity(1L).build());
+
         CreateBillRequest createBillRequest = CreateBillRequest.builder()
-                .quantity(quantity)
+                .products(productCounts)
                 .userId(userId)
                 .build();
 
-        given(productService.getProduct(productId)).willThrow(new ShopException(ApplicationErrorCode.NOT_FOUND));
+        given(productService.getProducts(argThat(argument -> argument.containsAll(productIds)))).willThrow(new ShopException(ApplicationErrorCode.NOT_FOUND));
 
         //then
-        assertThatThrownBy(() -> billService.createBill(productId, createBillRequest))
+        assertThatThrownBy(() -> billService.createBill(createBillRequest))
                 .isInstanceOf(ShopException.class)
                 .hasFieldOrPropertyWithValue("httpStatus", HttpStatus.NOT_FOUND);
 
-        verify(productService).getProduct(productId);
+        verify(productService).getProducts(productIds);
         verifyNoInteractions(discountService);
     }
 }

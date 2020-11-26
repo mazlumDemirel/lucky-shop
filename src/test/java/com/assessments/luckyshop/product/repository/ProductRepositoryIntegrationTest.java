@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
-import java.util.Optional;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,24 +28,25 @@ class ProductRepositoryIntegrationTest {
     }
 
     @Test
-    void findByTransactionId_withValidProductId_shouldPass() {
+    void findByTransactionIdIn_withValidProductId_shouldPass() {
         //when
-        Optional<Product> productWrapper = productRepository.findByTransactionId(savedProductTransactionId);
+        List<Product> products = productRepository.findByTransactionIdIn(List.of(savedProductTransactionId));
 
         //then
-        assertThat(productWrapper)
-                .isPresent();
+        assertThat(products)
+                .isNotEmpty()
+                .hasSize(1);
     }
 
     @Test
-    void findByTransactionId_withInValidProductId_shouldFail() {
+    void findByTransactionIdIn_withInValidProductId_shouldFail() {
         //given
         String dummyProductId = "dummy-product-id";
 
         //when
-        Optional<Product> productWrapper = productRepository.findByTransactionId(dummyProductId);
+        List<Product> products = productRepository.findByTransactionIdIn(List.of(dummyProductId));
 
         //then
-        assertThat(productWrapper).isNotPresent();
+        assertThat(products).isEmpty();
     }
 }

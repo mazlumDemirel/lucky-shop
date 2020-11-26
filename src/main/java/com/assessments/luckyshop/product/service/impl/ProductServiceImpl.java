@@ -8,18 +8,18 @@ import com.assessments.luckyshop.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     @Override
-    public Product getProduct(String productId) {
-        return productRepository
-                .findByTransactionId(productId)
-                .orElseThrow(
-                        () -> {
-                            throw new ShopException(ApplicationErrorCode.NOT_FOUND);
-                        });
+    public List<Product> getProducts(List<String> productIds) {
+        List<Product> products = productRepository.findByTransactionIdIn(productIds);
+        if (products.size() != productIds.size())
+            throw new ShopException(ApplicationErrorCode.NOT_FOUND);
+        return products;
     }
 }

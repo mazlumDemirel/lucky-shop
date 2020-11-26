@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,8 +17,9 @@ public class DiscountServiceImpl implements DiscountService {
     private final UserService userService;
 
     @Override
-    public BigDecimal calculateDiscount(CreateBillRequest createBillRequest, Product product) {
+    public BigDecimal calculateDiscount(CreateBillRequest createBillRequest, List<Product> products) {
         User user = userService.getUser(createBillRequest.getUserId());
+
         return null;
     }
 }

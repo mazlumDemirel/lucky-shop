@@ -11,7 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
-import java.util.Optional;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -32,31 +32,33 @@ class ProductServiceTest {
     }
 
     @Test
-    void getProduct_withValidProductId_shouldPass() {
+    void getProducts_withValidProductIds_shouldPass() {
         //given
         String productId = "dummy-product-id";
         Product expectedProduct = new Product();
-        given(productRepository.findByTransactionId(productId)).willReturn(Optional.of(expectedProduct));
+        List<String> productIds = List.of(productId);
+        given(productRepository.findByTransactionIdIn(productIds)).willReturn(List.of(expectedProduct));
 
         //when
-        Product product = productService.getProduct(productId);
+        List<Product> products = productService.getProducts(productIds);
 
         //then
-        verify(productRepository).findByTransactionId(productId);
-        assertThat(product)
+        verify(productRepository).findByTransactionIdIn(productIds);
+        assertThat(products)
                 .isNotNull()
-                .isEqualTo(product);
+                .isEqualTo(products);
     }
 
     @Test
-    void getProduct_withInValidProductId_shouldFail() {
+    void getProducts_withInValidProductIds_shouldFail() {
         //given
         String productId = "dummy-product-id";
-        given(productRepository.findByTransactionId(productId)).willReturn(Optional.empty());
+        List<String> productIds = List.of(productId);
+        given(productRepository.findByTransactionIdIn(productIds)).willReturn(List.of());
 
         //then
         verifyNoInteractions(productRepository);
-        assertThatThrownBy(() -> productService.getProduct(productId))
+        assertThatThrownBy(() -> productService.getProducts(productIds))
                 .isInstanceOf(ShopException.class)
                 .hasFieldOrPropertyWithValue("httpStatus", HttpStatus.NOT_FOUND);
     }

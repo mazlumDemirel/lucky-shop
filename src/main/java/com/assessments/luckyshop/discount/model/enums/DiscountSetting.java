@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum Discount {
+public enum DiscountSetting {
     AMOUNT(DiscountType.AMOUNT, 5),
     AFFILIATE(DiscountType.PERCENTAGE, 10),
     EMPLOYEE(DiscountType.PERCENTAGE, 30),
