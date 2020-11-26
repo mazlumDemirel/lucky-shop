@@ -54,5 +54,7 @@ You can execute docker-compose.yaml to initialize PostgreSQL db and pg-admin on 
     `./gradlew clean build jacocoTestReport`
     
     you will find reports under `build/jacocoHtml/index.html`
+
+- You can run sonarlint static code analyses with `./gradlew check`
     
 - I added an auto-generated UML diagram under the root directory with the name `Class_Diagram.png`.

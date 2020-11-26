@@ -3,6 +3,8 @@ package com.assessments.luckyshop.infrastructure.util;
 import com.assessments.luckyshop.api.dto.request.CreateBillRequest;
 import com.assessments.luckyshop.api.dto.request.ProductCount;
 import com.assessments.luckyshop.product.model.entity.Product;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ShopUtils {
     public static BigDecimal calculateTotalAmount(Map<Long, Product> products) {
         return products.entrySet().stream()
