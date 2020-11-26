@@ -1,4 +1,4 @@
-package com.assessments.luckyshop.discount;
+package com.assessments.luckyshop.discount.service;
 
 import com.assessments.luckyshop.api.dto.request.CreateBillRequest;
 import com.assessments.luckyshop.product.model.entity.Product;

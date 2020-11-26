@@ -1,4 +1,4 @@
-package com.assessments.luckyshop.product;
+package com.assessments.luckyshop.product.service;
 
 import com.assessments.luckyshop.product.model.entity.Product;
 

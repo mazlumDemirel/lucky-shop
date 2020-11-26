@@ -1,12 +1,12 @@
-package com.assessments.luckyshop.bill.impl;
+package com.assessments.luckyshop.bill.service.impl;
 
 import com.assessments.luckyshop.api.dto.request.CreateBillRequest;
 import com.assessments.luckyshop.api.dto.response.BillResponse;
-import com.assessments.luckyshop.bill.BillService;
-import com.assessments.luckyshop.discount.DiscountService;
+import com.assessments.luckyshop.bill.service.BillService;
+import com.assessments.luckyshop.discount.service.DiscountService;
 import com.assessments.luckyshop.infrastructure.util.ShopUtils;
-import com.assessments.luckyshop.product.ProductService;
 import com.assessments.luckyshop.product.model.entity.Product;
+import com.assessments.luckyshop.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

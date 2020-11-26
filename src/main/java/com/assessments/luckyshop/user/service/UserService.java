@@ -1,4 +1,4 @@
-package com.assessments.luckyshop.user;
+package com.assessments.luckyshop.user.service;
 
 import com.assessments.luckyshop.user.model.entity.User;
 
