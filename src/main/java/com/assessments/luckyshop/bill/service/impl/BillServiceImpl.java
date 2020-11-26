@@ -27,9 +27,9 @@ public class BillServiceImpl implements BillService {
         List<String> productIds = billRequest.getProducts().stream().map(ProductCount::getProductId).collect(Collectors.toList());
         List<Product> products = productService.getProducts(productIds);
 
-        BigDecimal discountAmount = discountService.calculateDiscount(billRequest, products);
-
         Map<Long, Product> productsByQuantities = groupProductsByQuantities(billRequest, products);
+
+        BigDecimal discountAmount = discountService.calculateDiscount(billRequest, productsByQuantities);
 
         return BillResponse.builder()
                 .amount(ShopUtils.calculateTotalAmount(productsByQuantities))

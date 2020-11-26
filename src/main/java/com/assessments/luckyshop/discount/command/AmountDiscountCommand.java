@@ -1,0 +1,46 @@
+package com.assessments.luckyshop.discount.command;
+
+import com.assessments.luckyshop.discount.model.enums.DiscountSetting;
+import com.assessments.luckyshop.infrastructure.util.ShopUtils;
+import com.assessments.luckyshop.product.model.entity.Product;
+import com.assessments.luckyshop.product.model.enums.ProductType;
+import lombok.RequiredArgsConstructor;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Map;
+
+import static java.util.List.of;
+
+@RequiredArgsConstructor
+public class AmountDiscountCommand implements DiscountCommand {
+    private static final DiscountSetting DISCOUNT_SETTING = DiscountSetting.AMOUNT;
+    private final Map<Long, Product> productsByQuantities;
+
+    @Override
+    public boolean isApplicable() {
+        return productsByQuantities.entrySet().stream().anyMatch(longProductEntry ->
+                longProductEntry.getValue().getProductType().equals(ProductType.OTHERS)
+                        && of(0, 1).contains(ShopUtils.calculateAmount(longProductEntry.getValue().getPrice(), longProductEntry.getKey()).compareTo(BigDecimal.valueOf(100)))
+        );
+    }
+
+    @Override
+    public BigDecimal execute() {
+        BigDecimal quotient = productsByQuantities
+                .entrySet()
+                .stream()
+                .filter(longProductEntry -> longProductEntry.getValue().getProductType().equals(ProductType.OTHERS))
+                .map(longProductEntry -> {
+                    BigDecimal amount = ShopUtils.calculateAmount(longProductEntry.getValue().getPrice(), longProductEntry.getKey());
+                    return amount.divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP);
+                }).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return quotient.multiply(BigDecimal.valueOf(DISCOUNT_SETTING.getDiscountAmount()));
+    }
+
+    @Override
+    public DiscountSetting getDiscountSetting() {
+        return DISCOUNT_SETTING;
+    }
+}

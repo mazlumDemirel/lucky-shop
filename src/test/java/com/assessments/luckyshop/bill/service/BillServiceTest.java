@@ -69,14 +69,14 @@ class BillServiceTest {
                 .build();
 
         given(productService.getProducts(argThat(argument -> argument.containsAll(productIds)))).willReturn(expectedProducts);
-        given(discountService.calculateDiscount(eq(createBillRequest), argThat(argument -> argument.containsAll(expectedProducts)))).willReturn(calculatedDiscountAmount);
+        given(discountService.calculateDiscount(eq(createBillRequest), argThat(argument -> argument.containsKey(quantity) && argument.containsValue(expectedProducts.get(0))))).willReturn(calculatedDiscountAmount);
 
         //when
         BillResponse billResponse = billService.createBill(createBillRequest);
 
         //then
         verify(productService).getProducts(productIds);
-        verify(discountService).calculateDiscount(eq(createBillRequest), argThat(argument -> argument.containsAll(expectedProducts)));
+        verify(discountService).calculateDiscount(eq(createBillRequest), argThat(argument -> argument.containsKey(quantity) && argument.containsValue(expectedProducts.get(0))));
         assertThat(billResponse)
                 .isNotNull()
                 .hasFieldOrPropertyWithValue("amount", ShopUtils.calculateAmount(productPrice, quantity))

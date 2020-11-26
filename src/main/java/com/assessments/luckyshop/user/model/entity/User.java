@@ -5,7 +5,10 @@ import com.assessments.luckyshop.user.model.enums.UserType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -17,5 +20,7 @@ import static com.assessments.luckyshop.infrastructure.constant.ShopConstants.DE
 @Table(name = "user")
 @SequenceGenerator(name = DEFAULT_ID_GENERATOR_NAME, sequenceName = "seq_user")
 public class User extends BaseEntity {
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private UserType userType;
 }

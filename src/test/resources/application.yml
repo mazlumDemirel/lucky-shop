@@ -1,0 +1,8 @@
+spring:
+  flyway:
+    enabled: false
+
+logging:
+  level:
+    com:
+      assessments: ERROR

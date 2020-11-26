@@ -11,6 +11,8 @@ sourceCompatibility = '11'
 
 ext {
     lombokVersion = "1.18.12"
+    postgreSQLVersion = "42.2.14"
+    openApiVersion = "1.4.3"
 }
 
 repositories {
@@ -22,6 +24,10 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation "org.flywaydb:flyway-core"
+    implementation "org.postgresql:postgresql:$postgreSQLVersion"
+    implementation "org.springdoc:springdoc-openapi-data-rest:$openApiVersion"
+    implementation "org.springdoc:springdoc-openapi-ui:$openApiVersion"
 
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
