@@ -1,10 +1,10 @@
 # Assessment
-### Lucky Shop API
+### Shopping Application API
 
 This project includes API for calculating bill with total and discount amounts by applying pre-defined discount rules to the request.
 There is 1 endpoint in the API;
 
--   POST /bills
+-   `POST /bills`
 
 To create an executable jar and run the application you can follow below steps instead of using IDE;
 
@@ -14,7 +14,7 @@ To create an executable jar and run the application you can follow below steps i
     
 - You can run the application with;
 
-    `java -jar -DDB_URL={host_url} -DDB_PORT={postgre_db_port} -DDB_NAME={name_of_the_db_to_be_used} -DDB_USERNAME={db_user_name} -DDB_PASSWORD={db_user_password} build/libs/lucky-shop.jar`
+    `java -jar -DDB_URL={host_url} -DDB_PORT={postgre_db_port} -DDB_NAME={name_of_the_db_to_be_used} -DDB_USERNAME={db_user_name} -DDB_PASSWORD={db_user_password} build/libs/shopping.jar`
 
 Note: You must provide below parameters for connect to database.
 
