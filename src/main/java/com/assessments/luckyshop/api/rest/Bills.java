@@ -22,8 +22,10 @@ public class Bills {
     private final BillService billService;
 
     /**
-     * @param request
-     * @return
+     * API to retrieve calculated bill depending to the product/user types and total amount of the eligible products.
+     *
+     * @param request contains user and productId/product quantity information {@link CreateBillRequest}
+     * @return BillResponse
      */
     @PostMapping(
             produces = MediaType.APPLICATION_JSON_VALUE)
