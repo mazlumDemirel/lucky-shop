@@ -57,8 +57,10 @@ class ShopUtilsTest {
                 ProductCount.builder().productId(productId2).quantity(1L).build()
         );
 
-        CreateBillRequest createBillRequest = CreateBillRequest.builder().build();
-        createBillRequest.setProducts(productCounts);
+        CreateBillRequest createBillRequest = CreateBillRequest
+                .builder()
+                .products(productCounts)
+                .build();
 
         List<Product> products = List.of(
                 new Product() {{

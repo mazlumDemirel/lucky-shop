@@ -4,8 +4,6 @@ import com.assessments.luckyshop.LuckyShopApplication;
 import com.assessments.luckyshop.api.dto.request.CreateBillRequest;
 import com.assessments.luckyshop.api.dto.request.ProductCount;
 import com.assessments.luckyshop.infrastructure.model.ApplicationErrorCode;
-import com.assessments.luckyshop.product.repository.ProductRepository;
-import com.assessments.luckyshop.user.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,10 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql(scripts = {"/initial_data.sql"},
         config = @SqlConfig(encoding = "utf-8", transactionMode = SqlConfig.TransactionMode.ISOLATED))
 class BillsIntegrationTest {
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private UserRepository userRepository;
     @Autowired
     private MockMvc mockMvc;
     @Autowired

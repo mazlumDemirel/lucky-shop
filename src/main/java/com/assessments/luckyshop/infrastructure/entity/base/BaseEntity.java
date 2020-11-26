@@ -14,8 +14,9 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 public abstract class BaseEntity {
+    @Setter
     @Column(name = "created_at", updatable = false, nullable = false)
-    private final LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
     @Id
     @Basic(optional = false)
     @Column(name = "id")

@@ -88,9 +88,6 @@ class BillServiceTest {
         //given
         String productId = "dummy-product-id";
         String userId = "dummy-user-id";
-        long quantity = 1L;
-
-        BigDecimal productPrice = BigDecimal.valueOf(100L);
 
         List<String> productIds = List.of(productId);
 

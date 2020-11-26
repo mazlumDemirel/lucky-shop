@@ -39,7 +39,8 @@ public class AmountDiscountCommand implements DiscountCommand {
                 .divide(BigDecimal.valueOf(100), RoundingMode.UP)
                 .setScale(0, RoundingMode.DOWN);
 
-        return quotient.multiply(BigDecimal.valueOf(DISCOUNT_SETTING.getDiscountAmount()));
+        return quotient
+                .multiply(BigDecimal.valueOf(DISCOUNT_SETTING.getDiscountAmount()));
     }
 
     @Override

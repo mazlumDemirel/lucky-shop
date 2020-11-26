@@ -8,6 +8,7 @@ import com.assessments.luckyshop.user.model.enums.UserType;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -16,10 +17,11 @@ public class LoyaltyDiscountCommand implements DiscountCommand {
     private static final DiscountSetting DISCOUNT_SETTING = DiscountSetting.LOYALTY;
     private final User user;
     private final Map<Long, Product> productsByQuantities;
+    private final Clock clock;
 
     @Override
     public boolean isApplicable() {
-        LocalDateTime twoYearsAgo = LocalDateTime.now().minusYears(2);
+        LocalDateTime twoYearsAgo = LocalDateTime.now(clock).minusYears(2);
         return user.getUserType().equals(UserType.MEMBER)
                 && (user.getCreatedAt().isEqual(twoYearsAgo) || user.getCreatedAt().isBefore(twoYearsAgo));
     }
